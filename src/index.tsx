@@ -8,13 +8,13 @@ import { App } from 'components/App';
 import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLDivElement).render(
-  // <React.StrictMode>
-  <BrowserRouter basename="/Templates-REACT">
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <App />
-      </PersistGate>
-    </Provider>
-  </BrowserRouter>
-  // </React.StrictMode>
+  <React.StrictMode>
+    <BrowserRouter basename="/Templates-TS-React">
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
+      </Provider>
+    </BrowserRouter>
+  </React.StrictMode>
 );
