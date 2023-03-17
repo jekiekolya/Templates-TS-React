@@ -1,8 +1,8 @@
 {
-  "name": "templates-react",
+  "name": "templates-ts-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jekiekolya.github.io/Templates-REACT/",
+  "homepage": "https://jekiekolya.github.io/Templates-TS-React/",
   "dependencies": {
     "@emotion/styled": "^11.10.5",
     "@reduxjs/toolkit": "^1.9.0",
