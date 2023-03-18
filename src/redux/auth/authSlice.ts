@@ -3,7 +3,10 @@ import authOperations from './authOperations';
 import storage from 'redux-persist/lib/storage';
 import { persistReducer } from 'redux-persist';
 
-const initialState = {
+// Types
+import { AuthSlice } from 'types';
+
+const initialState: AuthSlice = {
   user: { username: null, email: null, id: null },
   accessToken: null,
   refreshToken: null,
@@ -13,15 +16,18 @@ const initialState = {
     register: false,
     logIn: false,
     registration: false,
-    refresh: false,
+    logOut: false,
   },
 };
 
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
+  reducers: {},
   extraReducers: builder => {
     builder
+
+      // REGISTRATION
       .addCase(authOperations.register.pending, state => {
         state.loading.registration = true;
       })
@@ -29,29 +35,25 @@ export const authSlice = createSlice({
         state.loading.registration = false;
       })
       .addCase(authOperations.register.fulfilled, (state, { payload }) => {
-        state.user.username = payload['user']['username'];
-        state.user.email = payload['user']['email'];
-        state.user.id = payload['user']['id'];
+        state.user.username = payload.username;
+        state.user.email = payload.email;
+        state.user.id = payload.id;
 
-        state.accessToken = payload['accessToken'];
-        state.refreshToken = payload['refreshToken'];
-        state.sid = payload['sid'];
-
-        state.isLoggedIn = true;
         state.loading.registration = false;
       })
 
+      // LOGIN
       .addCase(authOperations.logIn.pending, state => {
         state.loading.logIn = true;
       })
       .addCase(authOperations.logIn.fulfilled, (state, { payload }) => {
-        state.user.username = payload['user']['username'];
-        state.user.email = payload['user']['email'];
-        state.user.id = payload['user']['id'];
+        state.user.username = payload.user.username;
+        state.user.email = payload.user.email;
+        state.user.id = payload.user.id;
 
-        state.accessToken = payload['accessToken'];
-        state.refreshToken = payload['refreshToken'];
-        state.sid = payload['sid'];
+        state.accessToken = payload.accessToken;
+        state.refreshToken = payload.refreshToken;
+        state.sid = payload.sid;
 
         state.isLoggedIn = true;
         state.loading.logIn = false;
@@ -60,6 +62,7 @@ export const authSlice = createSlice({
         state.loading.logIn = false;
       })
 
+      // LOGOUT
       .addCase(authOperations.logOut.pending, state => {
         state.loading.logOut = true;
       })
@@ -77,42 +80,12 @@ export const authSlice = createSlice({
       })
       .addCase(authOperations.logOut.rejected, state => {
         state.loading.logOut = false;
-      })
-
-      .addCase(authOperations.refresh.pending, state => {
-        state.loading.refresh = true;
-        state.accessToken = null;
-      })
-      .addCase(authOperations.refresh.fulfilled, (state, { payload }) => {
-        state.accessToken = payload.refreshData['newAccessToken'];
-        state.refreshToken = payload.refreshData['newRefreshToken'];
-        state.sid = payload.refreshData['sid'];
-
-        state.user.username = payload.userData['username'];
-        state.user.email = payload.userData['email'];
-        state.user.id = payload.userData['id'];
-
-        state.isLoggedIn = true;
-        state.isFetchingCurrentUser = false;
-        state.loading.refresh = false;
-      })
-      .addCase(authOperations.refresh.rejected, state => {
-        state.accessToken = initialState.accessToken;
-        state.refreshToken = initialState.refreshToken;
-        state.sid = initialState.sid;
-
-        state.user.username = initialState.user.username;
-        state.user.email = initialState.user.email;
-        state.user.id = initialState.user.id;
-
-        state.isLoggedIn = initialState.isLoggedIn;
-        state.loading.refresh = false;
       });
   },
 });
 
 const persistConfig = {
-  key: 'watermelon/slimMom',
+  key: 'team/nameProject',
   storage,
   // whitelist: ['token'],
   blacklist: ['loading'],
